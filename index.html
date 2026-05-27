@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>سوسنة 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ff6b9d;
+    --deep-pink: #e91e8c;
+    --soft-pink: #ffd6e7;
+    --yellow: #ffd93d;
+    --purple: #c77dff;
+    --bg: #fff0f7;
+    --dark: #2d0036;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .hearts-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .heart-float {
+    position: absolute; font-size: 1.5rem; opacity: 0.15;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0.15; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .screen.active { display: flex; }
+
+  #screen1 { background: linear-gradient(160deg, #fff0f7 0%, #ffd6e7 100%); }
+
+  .kiro-label {
+    font-size: 0.85rem;
+    color: var(--deep-pink);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeSlideIn 0.6s 0.2s forwards;
+  }
+
+  .main-title {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(2.8rem, 12vw, 4.5rem);
+    color: var(--deep-pink);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeSlideIn 0.7s 0.4s forwards;
+    text-shadow: 4px 4px 0px var(--soft-pink), 0 0 40px rgba(233,30,140,0.2);
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #a0527a;
+    margin-bottom: 36px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeSlideIn 0.7s 0.6s forwards;
+  }
+
+  .big-emoji {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: bounceIn 0.8s 0.8s forwards;
+    display: block;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--deep-pink), var(--purple));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 44px;
+    font-size: 1.2rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(233,30,140,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0;
+    animation: fadeSlideIn 0.6s 1s forwards;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: width 0.4s, height 0.4s;
+  }
+  .btn-primary:active::after { width: 200px; height: 200px; }
+  .btn-primary:active { transform: scale(0.96); }
+
+  #screen2 { background: linear-gradient(160deg, #fff8e1 0%, #ffd6e7 100%); }
+
+  .question-emoji {
+    font-size: 4.5rem;
+    margin-bottom: 16px;
+    animation: wobble 2s infinite;
+    display: block;
+  }
+
+  .question-text {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .question-sub {
+    font-size: 1rem;
+    color: #a0527a;
+    margin-bottom: 40px;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 60px;
+    font-size: 1.3rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(76,175,80,0.4);
+    margin-bottom: 16px;
+    width: 80%;
+    max-width: 280px;
+    display: block;
+    transition: transform 0.15s;
+  }
+  .btn-yes:active { transform: scale(0.95); }
+
+  .btn-no {
+    background: linear-gradient(135deg, #ff5252, #d32f2f);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 60px;
+    font-size: 1.3rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255,82,82,0.4);
+    width: 80%;
+    max-width: 280px;
+    display: block;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+
+  .no-msg {
+    display: none;
+    margin-top: 24px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    font-size: 1rem;
+    color: var(--dark);
+    line-height: 1.6;
+    max-width: 320px;
+    animation: shakeIn 0.5s forwards;
+  }
+  .no-msg.visible { display: block; }
+  .no-msg .msg-emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
+
+  #screen3 { background: linear-gradient(160deg, #e8f5e9 0%, #ffd6e7 100%); }
+
+  .confetti-zone {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  .emoji-img {
+    width: 170px;
+    height: 170px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    animation: bounceIn 0.8s 0.2s both;
+    position: relative;
+    z-index: 2;
+  }
+
+  .yay-title {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(2rem, 9vw, 3.2rem);
+    color: var(--deep-pink);
+    margin-bottom: 12px;
+    animation: popIn 0.6s 0.4s both;
+    text-shadow: 3px 3px 0 var(--soft-pink);
+    position: relative;
+    z-index: 2;
+  }
+
+  .love-msg {
+    font-size: 1.05rem;
+    color: #5a3060;
+    line-height: 1.8;
+    margin-bottom: 32px;
+    animation: fadeSlideIn 0.6s 0.6s both;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    max-width: 340px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .signature {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.4rem;
+    color: var(--deep-pink);
+    animation: fadeSlideIn 0.6s 0.8s both;
+    margin-top: 8px;
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    60% { opacity: 1; transform: scale(1.15); }
+    80% { transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    70% { transform: scale(1.1) rotate(3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+  }
+  @keyframes shakeIn {
+    0% { opacity: 0; transform: translateX(-20px); }
+    50% { transform: translateX(8px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    animation: confettiFall linear forwards;
+    border-radius: 2px;
+  }
+
+  .btn-restart {
+    background: transparent;
+    border: 2px solid var(--deep-pink);
+    color: var(--deep-pink);
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    animation: fadeSlideIn 0.6s 1s both;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+    z-index: 2;
+  }
+  .btn-restart:active { background: var(--deep-pink); color: white; }
+</style>
+</head>
+<body>
+
+<script>
+  // إضافة نظام حماية بكلمة مرور في بداية تحميل الصفحة
+  let pass = prompt("برجاء إدخال كلمة المرور:");
+  while (pass !== "sosana") {
+    pass = prompt("كلمة المرور خاطئة! حاول مرة أخرى:");
+  }
+</script>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="screen active" id="screen1">
+  <span class="kiro-label">رسالة خاصة من kirolos</span>
+  <span class="big-emoji">💌</span>
+  <h1 class="main-title">sosana</h1>
+  <p class="subtitle">في رسالة صغيرة<br>مهمة جداً محتاجة تشوفيها 💕</p>
+  <button class="btn-primary" onclick="goTo('screen2')">افتحي الرسالة 💕</button>
+</div>
+
+<div class="screen" id="screen2">
+  <span class="question-emoji">😉</span>
+  <h2 class="question-text">لسه زعلانة مني<br>يا سوسنه؟</h2>
+  <p class="question-sub">فكري كويس قبل ما تردي 😅</p>
+
+  <button class="btn-yes" onclick="goTo('screen3')">لأ خلاص 💚</button>
+  <button class="btn-no" id="noBtn" onclick="handleNo()">أيوه زعلانة 😤</button>
+
+  <div class="no-msg" id="noMsg">
+    <span class="msg-emoji" id="noMsgEmoji">😢</span>
+    <span id="noMsgText">...</span>
+  </div>
+</div>
+
+<div class="screen" id="screen3">
+  <div class="confetti-zone" id="confettiZone"></div>
+  <img class="emoji-img" id="roseEmoji" src="" alt="😍🌹" />
+  <h2 class="yay-title">اموت انا</h2>
+  <div class="love-msg">
+    يا سوسنه ,<br><br>
+    😘اموت انا
+  </div>
+  <div class="signature">— kirolos 💕</div>
+  <br>
+  <button class="btn-restart" onclick="restart()">ابدأ من الأول 🔄</button>
+</div>
+
+<script>
+  // مسار الصورة المرفوعة بدون خلفية
+  document.getElementById('roseEmoji').src = '303a5c656f177a9ccc3fd07e07d5dd10-removebg-preview.png';
+
+  // Generate floating hearts
+  const heartsBg = document.getElementById('heartsBg');
+  const heartsArr = ['💕','💗','🌸','💓','✨','🌷','💖'];
+  for (let i = 0; i < 15; i++) {
+    const el = document.createElement('span');
+    el.className = 'heart-float';
+    el.textContent = heartsArr[Math.floor(Math.random() * heartsArr.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.animationDuration = (6 + Math.random() * 10) + 's';
+    el.style.animationDelay = (Math.random() * 10) + 's';
+    el.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    heartsBg.appendChild(el);
+  }
+
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id === 'screen3') launchConfetti();
+  }
+
+  let noCount = 0;
+  const noMessages = [
+    { emoji: '🐱', text: 'هجبلك شوكولاته' },
+    { emoji: '😤', text:' هتحايل علي ميتينك ؟ ' },
+    { emoji: '🙏', text: 'متخلصي يبت متبقيش بضان🙏' },
+  ];
+
+  function handleNo() {
+    const msg = noMessages[Math.min(noCount, noMessages.length - 1)];
+    const noMsgDiv = document.getElementById('noMsg');
+    document.getElementById('noMsgEmoji').textContent = msg.emoji;
+    document.getElementById('noMsgText').textContent = msg.text;
+    noMsgDiv.classList.remove('visible');
+    void noMsgDiv.offsetWidth;
+    noMsgDiv.classList.add('visible');
+    const btn = document.getElementById('noBtn');
+    btn.style.animation = 'shakeIn 0.4s';
+    setTimeout(() => btn.style.animation = '', 400);
+    noCount++;
+  }
+
+  function launchConfetti() {
+    const zone = document.getElementById('confettiZone');
+    zone.innerHTML = '';
+    const colors = ['#ff6b9d','#ffd93d','#c77dff','#4CAF50','#ff5252','#64b5f6'];
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = '-10px';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.width = (6 + Math.random() * 8) + 'px';
+      p.style.height = (6 + Math.random() * 8) + 'px';
+      p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      p.style.animationDuration = (2 + Math.random() * 3) + 's';
+      p.style.animationDelay = (Math.random() * 1.5) + 's';
+      zone.appendChild(p);
+    }
+  }
+
+  function restart() {
+    noCount = 0;
+    document.getElementById('noMsg').classList.remove('visible');
+    goTo('screen1');
+  }
+</script>
+</body>
+</html>
